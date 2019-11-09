@@ -45,3 +45,24 @@ a {
 .dropdown h3{
 	margin:4px;
 }
+.hot-topics {
+	margin:0;
+	padding:0;
+	display:flex;
+	flex-direction: row;
+}
+.hot-topics h2 {
+	margin-right:10px;
+}
+.icon-wrapper {
+	transition: all 0.2s;
+	display:inline-block;
+	transform:rotate(180deg);
+	display:flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.hot-topics .icon-wrapper.rotated {
+	color:#e3e3e3;
+	transform:rotate(0);
+}
