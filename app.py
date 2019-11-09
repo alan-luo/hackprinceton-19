@@ -22,7 +22,11 @@ def main():
 
 @app.route('/topic')
 def topic():
-	return render_template('topic.html', );
+	return render_template('topic.html');
+
+@app.route('/viz')
+def viz():
+	return render_template('sourceGraphs.html')
 
 
 @app.route('/news-source-stats<query>', methods=['GET'])
