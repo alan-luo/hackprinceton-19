@@ -6,42 +6,16 @@
 {% endblock %}
 {% block content %}
 <div class="newscontainer">
+	{% for topic in topics_list %}
 	<div class="newswrapper">
-		<h2>Impeachment Hearings</h2>
+		<h2><a href= "/topic_page/{{ topic}}">{{ topic }}</a></h2>
 		<div class="news-links">
 			<div class="news-link">
-				<div class="link-title"><a href= {{articles_list[0][0]['url']}} target="_blank"> {{ articles_list[0][0]['title'] }} </a></div>
-				<div class="link-label">{{ articles_list[0][0]['source']['name'] }}</div>
-				<div class="news-summary">{{ articles_list[0][0]['description'] }}</div>
+				<div class="link-title"><a href= {{articles_list[loop.index0][0]['url']}} target="_blank"> {{ articles_list[loop.index0][0]['title'] }} </a></div>
+				<div class="link-label">{{ articles_list[loop.index0][0]['source']['name'] }}</div>
+				<div class="news-summary">{{ articles_list[loop.index0][0]['description'] }}</div>
 			</div>
 		</div>
 	</div>
-	<div class="newswrapper">
-		<h2>Vaping Health Dangers</h2>
-		<div class="news-links">
-			<div class="news-link">
-				<div class="link-title">Bolton's lawyer says he has information on Ukraine that hasn't been disclosed</div>
-				<div class="link-label">CNN - 6 hours ago</div>
-			</div>
-		</div>
-	</div>
-	<div class="newswrapper">
-		<h2>2020 US Presidential Election</h2>
-		<div class="news-links">
-			<div class="news-link">
-				<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
-				<div class="link-label">CNN - 3 hours ago</div>
-			</div>
-		</div>
-	</div>
-	<div class="newswrapper">
-		<h2>Hong Kong Protests</h2>
-		<div class="news-links">
-			<div class="news-link">
-				<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
-				<div class="link-label">CNN - 3 hours ago</div>
-			</div>
-		</div>
-	</div>
-</div>
+	{% endfor %}
 {% endblock %}

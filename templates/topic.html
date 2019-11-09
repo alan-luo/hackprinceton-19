@@ -1,9 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Index{% endblock %}
 {% block head %}
-  {{ super() }}
+{{ super() }}
 
 {% endblock %}
 {% block content %}
-
+<h2>{{ topic }}</h2>
+{% for article in articles_list %}
+<div class="newscontainer">
+    <div class="newswrapper">
+        <div class="news-link">
+            <div class="link-title"><a href={{article['url']}} target="_blank"> {{
+                article['title'] }} </a></div>
+            <div class="link-label">{{ article['source']['name'] }}</div>
+            <div class="news-summary">{{ article['description'] }}</div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
