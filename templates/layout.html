@@ -1,42 +1,24 @@
 <html>
 	<head>
 		{% block head %}
-		<link href="https://fonts.googleapis.com/css?family=Noto+Serif+JP:200,400,500,700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="/static/css/style.css">
-		<link rel="stylesheet" href="/static/css/fontello.css">
-		<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+		<link href="https://fonts.googleapis.com/css?family=Lato:300,400|Noto+Serif+JP:400,700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../static/css/style.css">
+		<link rel="stylesheet" href="../static/css/icomoon.css">
 
 		<title>{% block title %}{% endblock %}</title>
 		{% endblock %}
 	</head>
 	<body>
-		<div class="nav">
-			<div class="hot-topics">
-				<h2><a href="/">Hot Topics</a></h2>
-				<div onclick="toggle();"class="icon-wrapper" id="dropdown-icon"><span class="icon-up-open-big"></span></div>
+		<div class="header">
+			<div class="logo"><h1>News Aggregator</h1></div>
+
+			<div class="search"><input type="text" placeholder="Try 'controversial bitcoin articles from the last month'"></div>
+
+			<div class="graph-link">
+				<span class="icon-stats-dots"></span>
 			</div>
-			<div class="dropdown" id="dropdown">
-				{% for topic in topics_list %}
-				<h3><a href="/topic/{{ topic }}">{{ topic }}</a></h3>
-				{% endfor %}
-			</div>
-			<h2><a href="/viz">Sources</a></h2>
 		</div>
-		<script>
-			$(".dropdown").slideUp({duration: 0});
-			function toggle() {
-				if($("#dropdown-icon").hasClass("rotated")) {
-					$(".dropdown").slideUp();
-					$("#dropdown-icon").removeClass("rotated");
-				} else {
-					$(".dropdown").slideDown();
-					$("#dropdown-icon").addClass("rotated");
-				}
-			}
-		</script>
+		
 		<div class="container">
 			{% block content %}
 			{% endblock %}
