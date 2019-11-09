@@ -10,3 +10,7 @@ static/.DS_Store
 static/.DS_Store
 
 *.tsv
+
+.DS_Store
+
+static/.DS_Store
