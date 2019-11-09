@@ -15,8 +15,8 @@
 	<body>
 		<div class="nav">
 			<div class="hot-topics">
-				<h2 onclick="toggle();">Hot Topics</h2>
-				<div class="icon-wrapper" id="dropdown-icon"><span class="icon-up-open-big"></span></div>
+				<h2><a href="/">Hot Topics</a></h2>
+				<div onclick="toggle();"class="icon-wrapper" id="dropdown-icon"><span class="icon-up-open-big"></span></div>
 			</div>
 			<div class="dropdown" id="dropdown">
 				{% for topic in topics_list %}
