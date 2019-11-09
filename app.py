@@ -20,6 +20,10 @@ def main():
     print(articles)
     return render_template('index.html', articles_list=articles)
 
+@app.route('/topic')
+def topic():
+	return render_template('topic.html', );
+
 
 @app.route('/news-source-stats<query>', methods=['GET'])
 def get_news_source_stats(query):
