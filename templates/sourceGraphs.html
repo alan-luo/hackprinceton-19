@@ -14,15 +14,87 @@
 		position:fixed;
 	}
 
+	.xaxis {
+		
+		float:left;	
+		margin-left:8em;
+		margin-top:28em;
+		position:fixed;
+		
+
+	}
+
+	.yaxis {
+		float:left;	
+		transform: rotate(180deg);
+		writing-mode: vertical-lr;
+		text-orientation: sideways;
+		margin-left:-5em;
+		margin-top:-2em;
+		position:fixed;
+	}
+
+
+
 </style>
 
 {% endblock %}
 {% block content %}
 
-<h3>Today is going to be a good day!</h3>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script type="text/javascript">
-	d3.select('h3').style('color', 'steelblue');
-	d3.select('h3').style('font-size', '24px');
+
+
+//lines = axis
+var svgContainer = d3.select("body").append("svg")
+                                     .attr("width", 200)
+                                     .attr("height", 200);
+ 
+ //Draw the line (doesn't work)
+// var jsonLines = [
+//  	{"x1": 5, "y1":5, "x2":50, "y2":50, "stroke":"black", "stroke-width":"10"}];
+// var axes = svgContainer.selectAll("line")
+// 						.data(jsonLines)
+// 						.enter()
+// 						.append("line");
+
+// var lineAttributes = lines
+// 					 .attr("x1", function(d) {return d.x1;})
+// 					 .attr("y1", function(d) {return d.y1;})
+// 					 .attr("x2", function(d) {return d.x2;})
+// 					 .attr("y2", function(d) {return d.y2;})
+// 					 .style("stroke", function(d) {return d.stroke;})
+// 					 .style("stroke-width", function(d) {return d.stroke-width; });
+
+//circles!
+var jsonCircles = [
+   { "x_axis": 400, "y_axis": 150, "radius": 20, "color" : "blue" },
+   { "x_axis": 450, "y_axis": 237, "radius": 10, "color" : "purple"},
+   { "x_axis": 850, "y_axis": 450, "radius": 20, "color" : "red"}];
+ 
+var svgContainer = d3.select("body").append("svg")
+                                    .attr("width", 900)
+                                    .attr("height", 500);
+ 
+var circles = svgContainer.selectAll("circle")
+                          .data(jsonCircles)
+                          .enter()
+                          .append("circle");
+
+var circleAttributes = circles
+                       .attr("cx", function (d) { return d.x_axis; })
+                       .attr("cy", function (d) { return d.y_axis; })
+                       .attr("r", function (d) { return d.radius; })
+                       .style("fill", function(d) { return rbg(); });
+
 </script>
+
+<div class = "xaxis">
+	<p>Liberal ------------------------------------------- Conservative</p>
+
+</div>
+<div class = "yaxis">
+	<p>Local --------------------------------------------- International</p>
+
+</div>
 {% endblock %}
