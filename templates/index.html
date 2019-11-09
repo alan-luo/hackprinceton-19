@@ -1,57 +1,47 @@
-<html>
-	<head>
-		<link href="https://fonts.googleapis.com/css?family=Noto+Serif+JP:200,400,500,700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="/static/css/style.css">
-	</head>
-	<body>
-		<div class="nav">
-			<h2>Hot Topics</h2>
-			<h3>Impeachment</h3>
-			<h3>Vaping</h3>
-			<h3>2020</h3>
-			<h3>Hong Kong</h3>
-			<h2>Sources</h2>
-		</div>
-		<div class="container">
-			<div class="newscontainer">
-				<div class="newswrapper">
-					<h2>Impeachment Hearings</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title"><a href= {{articles_list[0][0]['url']}} target="_blank"> {{ articles_list[0][0]['title'] }} </a></div>
-							<div class="link-label">{{ articles_list[0][0]['source']['name'] }}</div>
-							<div class="news-summary">{{ articles_list[0][0]['description'] }}</div>
-						</div>
-					</div>
-				</div>
-				<div class="newswrapper">
-					<h2>Vaping Health Dangers</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Bolton's lawyer says he has information on Ukraine that hasn't been disclosed</div>
-							<div class="link-label">CNN - 6 hours ago</div>
-						</div>
-					</div>
-				</div>
-				<div class="newswrapper">
-					<h2>2020 US Presidential Election</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
-							<div class="link-label">CNN - 3 hours ago</div>
-						</div>
-					</div>
-				</div>
-				<div class="newswrapper">
-					<h2>Hong Kong Protests</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
-							<div class="link-label">CNN - 3 hours ago</div>
-						</div>
-					</div>
-				</div>
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+
+{% endblock %}
+{% block content %}
+<div class="newscontainer">
+	<div class="newswrapper">
+		<h2>Impeachment Hearings</h2>
+		<div class="news-links">
+			<div class="news-link">
+				<div class="link-title"><a href= {{articles_list[0][0]['url']}} target="_blank"> {{ articles_list[0][0]['title'] }} </a></div>
+				<div class="link-label">{{ articles_list[0][0]['source']['name'] }}</div>
+				<div class="news-summary">{{ articles_list[0][0]['description'] }}</div>
 			</div>
 		</div>
-	</body>
-</html>
+	</div>
+	<div class="newswrapper">
+		<h2>Vaping Health Dangers</h2>
+		<div class="news-links">
+			<div class="news-link">
+				<div class="link-title">Bolton's lawyer says he has information on Ukraine that hasn't been disclosed</div>
+				<div class="link-label">CNN - 6 hours ago</div>
+			</div>
+		</div>
+	</div>
+	<div class="newswrapper">
+		<h2>2020 US Presidential Election</h2>
+		<div class="news-links">
+			<div class="news-link">
+				<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
+				<div class="link-label">CNN - 3 hours ago</div>
+			</div>
+		</div>
+	</div>
+	<div class="newswrapper">
+		<h2>Hong Kong Protests</h2>
+		<div class="news-links">
+			<div class="news-link">
+				<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
+				<div class="link-label">CNN - 3 hours ago</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
