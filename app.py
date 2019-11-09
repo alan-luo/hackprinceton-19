@@ -21,6 +21,11 @@ def render_topic(topic_name):
     return render_template('topic.html', topic=topic_name, articles_list=topic_articles)
 
 
+@app.route('/viz')
+def viz():
+    return render_template('sourceGraphs.html')
+
+
 @app.route('/topic/<topic_name>')
 def get_topic(topic_name):
     return newsapi.get_top_headlines(q=topic_name, language='en', page_size=1).get('articles')
