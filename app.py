@@ -3,7 +3,7 @@ from newsapi import NewsApiClient
 
 app = Flask(__name__)
 newsapi = NewsApiClient(api_key='466f16c5dc2445eabe6a30991514a281')
-top_topics = ['Impeachment', 'Vaping', 'Election', 'Hong Kong']
+top_topics = ['Impeachment', 'Vape', 'Election', 'Hong Kong']
 news_source_stats = {
     "CNN": {'Credibility': 0.59, 'Locality': 0.56, 'Liberal Bias': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48},
     "BBC": {'Credibility': 0.90, 'Locality': 0.10, 'Liberal Bias': 0.50, 'Updatedness': 0.87, 'Sensationalism': 0.74},
@@ -37,7 +37,10 @@ def get_topic(topic_name):
         topic_str = topic_name
     else:
         topic_str = encoded
-    return newsapi.get_top_headlines(q=topic_str, language='en', page_size=5).get('articles')
+    myobj = newsapi.get_everything(q=topic_str, language='en', page_size=20).get('articles')
+    print "getting from " + topic_name
+    print len(myobj)
+    return myobj
 
 
 @app.route('/view-source-stats/<query>')
