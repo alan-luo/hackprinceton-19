@@ -15,7 +15,7 @@ def main():
     articles = []
     for topic in top_topics:
         articles.append(get_topic(topic))
-    print(articles)
+    # print(articles)
     return render_template('index.html', articles_list=articles, topics_list=top_topics)
 
 
@@ -37,7 +37,7 @@ def get_topic(topic_name):
         topic_str = topic_name
     else:
         topic_str = encoded
-    return newsapi.get_top_headlines(q=topic_str, language='en', page_size=1).get('articles')
+    return newsapi.get_top_headlines(q=topic_str, language='en', page_size=5).get('articles')
 
 
 @app.route('/view-source-stats/<query>')
