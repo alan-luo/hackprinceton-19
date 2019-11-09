@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 {% block title %}Index{% endblock %}
 {% block head %}
-  {{ super() }}
-  <style>
-	
+{{ super() }}
+<style>
+
 	.container {
 		float:left;	
-		width:70%;
+		width:50%;
 		height:70%;
 		border-left:2px solid black;
 		border-bottom:2px solid black;
-		margin-left:15em;
+		margin-left:30em;
 		position:fixed;
 	}
 
@@ -22,60 +22,7 @@
 <h3>Today is going to be a good day!</h3>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script type="text/javascript">
-	d3.select('h3').style('color','steelblue');
+	d3.select('h3').style('color', 'steelblue');
 	d3.select('h3').style('font-size', '24px');
 </script>
-
-
-<div class="nav">
-			<h2>Hot Topics</h2>
-			<h3>Impeachment</h3>
-			<h3>Vaping</h3>
-			<h3>2020</h3>
-			<h3>Hong Kong</h3>
-			<h2>Sources</h2>
-		</div>
-		<div class="container">
-			<div class="newscontainer">
-				<div class="newswrapper">
-					<h2>Impeachment Hearings</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Ivanka Trump: Whistleblower's ID irrelevant to impeachment</div>
-							<div class="link-label">POLITICO - 16 hours ago</div>
-						</div>
-					</div>
-				</div>
-				<div class="newswrapper">
-					<h2>Vaping Health Dangers</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Bolton's lawyer says he has information on Ukraine that hasn't been disclosed</div>
-							<div class="link-label">CNN - 6 hours ago</div>
-						</div>
-					</div>
-				</div>
-				<div class="newswrapper">
-					<h2>2020 US Presidential Election</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
-							<div class="link-label">CNN - 3 hours ago</div>
-						</div>
-					</div>
-				</div>
-				<div class="newswrapper">
-					<h2>Hong Kong Protests</h2>
-					<div class="news-links">
-						<div class="news-link">
-							<div class="link-title">Bannon testifies Trump campaign viewed Stone as access point to WikiLeaks</div>
-							<div class="link-label">CNN - 3 hours ago</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-</body>
 {% endblock %}
-
-                    
