@@ -28,8 +28,12 @@ def viz():
 
 @app.route('/get_topic/<topic_name>')
 def get_topic(topic_name):
-    return newsapi.get_top_headlines(q=topic_name, language='en', page_size=1).get('articles')
-
+    encoded = topic_name.encode("ascii")
+    if isinstance(topic_name, str):
+        topic_str = topic_name
+    else:
+        topic_str = encoded
+    return newsapi.get_top_headlines(q=topic_str, language='en', page_size=1).get('articles')
 
 @app.route('/news-source-stats/<query>', methods=['GET'])
 def get_news_source_stats(query):
