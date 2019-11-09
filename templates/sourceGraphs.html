@@ -1,55 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<link href="https://fonts.googleapis.com/css?family=Noto+Serif+JP:200,400,500,700&display=swap" rel="stylesheet">
-	<title>Experimenting with D3</title>
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
+	
+	.container {
+		float:left;	
+		width:70%;
+		height:70%;
+		border-left:2px solid black;
+		border-bottom:2px solid black;
+		margin-left:15em;
+		position:fixed;
+	}
 
-	<style>
-			body {
-				font-family:"Noto Serif JP", serif;
-			}
-			.nav {
-				float:left;	
-				width:70%;
-				heigth:70%;
-				border-left:2px solid black;
-				border-bottom:2px solid black;
-				margin-left:30em;
-				position:fixed;
-			}
-			.nav h3 {
-				font-weight:400;
-			}
-			.container {
-				width:65%;
-				margin-top:2em;
-				margin-left:25%;
-			}
-			.newswrapper {
+</style>
 
-			}
-			.newswrapper h2 {
-				font-size:24pt;
-				font-weight:500;
-			}
-			.news-links {
-				font-size:16pt;
-				font-weight:400;
-			}
-			.news-link {
-				margin:0.5em auto;
-			}
-			.link-title {
-
-			}
-			.link-label {
-				font-weight:200;
-				color:#999;
-				font-size:12pt;
-			}
-		</style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
 
 <h3>Today is going to be a good day!</h3>
 <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -108,6 +76,6 @@
 			</div>
 		</div>
 </body>
-</html>
+{% endblock %}
 
                     
