@@ -7,7 +7,7 @@
 <div class="newscontainer">
 	{% for topic in topics_list %}
 	<div class="newswrapper">
-		<h2><a href= "/topic_page/{{ topic}}">{{ topic }}</a></h2>
+		<h2><a href= "/topic/{{ topic }}">{{ topic }}</a></h2>
 		<div class="news-links">
 			<div class="news-link">
 				<div class="link-title"><a href= {{articles_list[loop.index0][0]['url']}} target="_blank"> {{ articles_list[loop.index0][0]['title'] }} </a></div>
@@ -18,3 +18,4 @@
 	</div>
 	{% endfor %}
 {% endblock %}
+</div>
