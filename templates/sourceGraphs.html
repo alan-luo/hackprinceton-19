@@ -4,7 +4,7 @@
 {{ super() }}
 <style>
 
-	.container {
+	/* .container {
 		float:left;	
 		width:50%;
 		height:70%;
@@ -12,13 +12,15 @@
 		border-bottom:2px solid black;
 		margin-left:30em;
 		position:fixed;
-	}
+		pointer-Events: none;
+
+	} */
 
 	.xaxis {
 		
 		float:left;	
-		margin-left:8em;
-		margin-top:28em;
+		margin-left:13em;
+		margin-top:35em;
 		position:fixed;
 		
 
@@ -29,51 +31,98 @@
 		transform: rotate(180deg);
 		writing-mode: vertical-lr;
 		text-orientation: sideways;
-		margin-left:-5em;
-		margin-top:-2em;
+		margin-left:0em;
+		margin-top:7em;
 		position:fixed;
 	}
 
+	.tooltip {
+   		position: absolute;
+    	z-index: 10;
+    	visibility: hidden;
+    	background-color: lightblue;
+    	text-align: center;
+    	padding: 4px;
+    	border-radius: 4px;
+    	font-weight: bold;
+    	color: orange;
+}
+
+	/* .graph{
+		border: 1px solid black;
+		
+	} */
 
 
 </style>
 
 {% endblock %}
 {% block content %}
+
+
+<div class = "xaxis">
+	<p>Liberal ------------------------------------------- Conservative</p>
+
+</div>
+<div class = "yaxis">
+	<p>Local --------------------------------------------- International</p>
+
+</div>
+
 <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
 <script type="text/javascript">
 
+//set up the tooltip for mouseovers
+var tooltip = d3.select(".container")
+  .append("div")
+  .attr('class', 'tooltip');
 
-//lines = axis
-var svgContainer = d3.select("body").append("svg")
-                                     .attr("width", 200)
-                                     .attr("height", 200);
+//creating the svg
+var w = 750;
+var h = 500;
+var yPos = 75;
+var xPos = 400;
+
+var svgContainer = d3.select(".container").append("svg")
+                                     .attr("width", w)
+                                     .attr("height", h)
+									 .attr("class","graph");
+									 
+
+
+$("svg").css({top: yPos, left: xPos, position:'absolute'});
  
- //Draw the line (doesn't work)
-// var jsonLines = [
-//  	{"x1": 5, "y1":5, "x2":50, "y2":50, "stroke":"black", "stroke-width":"10"}];
-// var axes = svgContainer.selectAll("line")
-// 						.data(jsonLines)
-// 						.enter()
-// 						.append("line");
+//lines = axis. Reference point is now the top left corner of the svg
+var jsonLines = [
+ 	{"x1": 0, "y1":0, "x2":0, "y2":h, "stroke":"black", "width":"20"},
+	{"x1": 0, "y1":h, "x2":w, "y2":h, "stroke":"black", "width":"20"}];
+var axes = svgContainer.selectAll("line")
+						.data(jsonLines)
+						.enter()
+						.append("line");
 
-// var lineAttributes = lines
-// 					 .attr("x1", function(d) {return d.x1;})
-// 					 .attr("y1", function(d) {return d.y1;})
-// 					 .attr("x2", function(d) {return d.x2;})
-// 					 .attr("y2", function(d) {return d.y2;})
-// 					 .style("stroke", function(d) {return d.stroke;})
-// 					 .style("stroke-width", function(d) {return d.stroke-width; });
+var lineAttributes = axes
+					 .attr("x1", function(d) {return d.x1;})
+					 .attr("y1", function(d) {return d.y1;})
+					 .attr("x2", function(d) {return d.x2;})
+					 .attr("y2", function(d) {return d.y2;})
+					 .style("stroke", function(d) {return d.stroke;})
+					 .style("width", function(d) {return d.width; })
+					 ;
 
 //circles!
 var jsonCircles = [
-   { "x_axis": 400, "y_axis": 150, "radius": 20, "color" : "blue" },
-   { "x_axis": 450, "y_axis": 237, "radius": 10, "color" : "purple"},
-   { "x_axis": 850, "y_axis": 450, "radius": 20, "color" : "red"}];
+   { "x_axis": 400, "y_axis": 150, "radius": 20, "color" : "blue", "name": "the-new-york-times"},
+   { "x_axis": 450, "y_axis": 237, "radius": 10, "color" : "purple", "name": "cnn"},
+   { "x_axis": 850, "y_axis": 450, "radius": 20, "color" : "red", "name": "cnbc"},
+   { "x_axis": 500, "y_axis": 120, "radius": 20, "color" : "blue", "name": "the-new-york-times"},
+   { "x_axis": 560, "y_axis": 300, "radius": 10, "color" : "purple", "name": "the-new-york-times"},
+   { "x_axis": 650, "y_axis": 390, "radius": 20, "color" : "red", "name": "the-new-york-times"}];
  
-var svgContainer = d3.select("body").append("svg")
-                                    .attr("width", 900)
-                                    .attr("height", 500);
+// var svgContainer = d3.select("body").append("svg")
+//                                     .attr("width", 900)
+//                                     .attr("height", 500);
  
 var circles = svgContainer.selectAll("circle")
                           .data(jsonCircles)
@@ -84,16 +133,9 @@ var circleAttributes = circles
                        .attr("cx", function (d) { return d.x_axis; })
                        .attr("cy", function (d) { return d.y_axis; })
                        .attr("r", function (d) { return d.radius; })
-                       .style("fill", function(d) { return rbg(); });
-
+                       .style("fill", function(d) { return `rgb(${(d.x_axis-400)*0.5},${0},${255-(d.x_axis-400)*0.5})`; })
+					   .on("mouseover", function(d) {return tooltip.style("visibility", "visible").text(d.name);})
+					//    .on("mousemove", function() {return tooltip.style("top", (event.pageY - 30) + "px").style("left", event.pageX + "px");})
+					   .on("mouseout", function(d) {return tooltip.style("visibility", "hidden");});
 </script>
-
-<div class = "xaxis">
-	<p>Liberal ------------------------------------------- Conservative</p>
-
-</div>
-<div class = "yaxis">
-	<p>Local --------------------------------------------- International</p>
-
-</div>
 {% endblock %}
