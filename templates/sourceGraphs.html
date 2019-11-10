@@ -16,26 +16,6 @@
 
 	} */
 
-	.xaxis {
-		
-		float:left;	
-		margin-left:13em;
-		margin-top:35em;
-		position:fixed;
-		
-
-	}
-
-	.yaxis {
-		float:left;	
-		transform: rotate(180deg);
-		writing-mode: vertical-lr;
-		text-orientation: sideways;
-		margin-left:0em;
-		margin-top:4em;
-		position:fixed;
-	}
-
 	.tooltip {
    		position: absolute;
     	z-index: 10;
@@ -47,6 +27,9 @@
     	font-weight: bold;
     	color:white;
 }
+	/* 
+	 * visualization purposes
+	*/
 
 	/* .graph{
 		border: 1px solid black;
@@ -62,15 +45,6 @@
 {% endblock %}
 {% block content %}
 
-<div class = "xaxis">
-	<p>Liberal----------------------------------------------------------------------Conservative</p>
-
-</div>
-<div class = "yaxis">
-	<p>Local-------------------------------------------------International</p>
-
-</div>
-
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
 <script type="text/javascript">
@@ -85,7 +59,7 @@ var tooltip = d3.select(".container")
 var w = 750;
 var h = 500;
 var yPos = 75;
-var xPos = 400;
+var xPos = 300;
 
 var svgContainer = d3.select(".container").append("svg")
                                      .attr("width", w)
@@ -98,8 +72,8 @@ $("svg").css({top: yPos, left: xPos, position:'absolute'});
  
 //lines = axis. Reference point is now the top left corner of the svg
 var jsonLines = [
- 	{"x1": 0, "y1":0, "x2":0, "y2":h, "stroke":"black", "stroke-width":"7"},
-	{"x1": 0, "y1":h, "x2":w, "y2":h, "stroke":"black", "stroke-width":"7"}];
+ 	{"x1": 20, "y1":0, "x2":20, "y2":h-15, "stroke":"black", "stroke-width":"2"},
+	{"x1": 20, "y1":h-15, "x2":w, "y2":h-15, "stroke":"black", "stroke-width":"2"}];
 var axes = svgContainer.selectAll("line")
 						.data(jsonLines)
 						.enter()
@@ -155,7 +129,39 @@ var circleAttributes = circles
 							return tooltip.style("visibility", "hidden");
 						});
 
+//axis labels
+var jsonText = [
+ 	{"x": 20, "y":h, "font-family":'"Lato"', "font-size":"10pt", "fill":"black", "text":"Liberal", "rotate":0},
+	{"x": w-100, "y":h, "font-family":'"Lato"', "font-size":"10pt", "fill":"black", "text":"Conservative", "rotate":0},
+	{"x": -475, "y":15, "font-family":'"Lato"', "font-size":"10pt", "fill":"black", "text":"Local", "rotate":-90},
+	{"x": -100, "y":15, "font-family":'"Lato"', "font-size":"10pt", "fill":"black", "text":"International", "rotate": -90}];
+var labels = svgContainer.selectAll("text")
+					 	 .data(jsonText)
+						 .enter()
+						 .append("text");
 
+var textAttributes = labels
+					 .text(function(d) {return d.text;})
+					 .attr("dx", function(d) {return d.x;})
+					 .attr("dy", function(d) {return d.y;})
+					 .style("text-anchor","front")
+					 .attr("transform", function(d) {return "rotate("+d.rotate+")"})
+					 //.attr("font-size", function(d) {return d["font-size"];})
+					 .attr("font-family", function(d) {return d["font-family"];});
+					//  .attr("fill", function(d) {return d.fill;})
+
+// var url = 'https://newsapi.org/v2/everything?' +
+//           'q=Apple&' +
+//           'from=2019-11-09&' +
+//           'sortBy=popularity&' +
+//           'apiKey=1a3c01b8b3e7430f9b253b26a3b59a8d';
+
+// var req = new Request(url);
+
+// fetch(req)
+//     .then(function(response) {
+//         console.log(response.json());
+//     })
 
 
 </script>

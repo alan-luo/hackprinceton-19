@@ -3,6 +3,7 @@ from newsapi import NewsApiClient
 import math
 import datetime
 import json
+import re
 
 app = Flask(__name__)
 newsapi = NewsApiClient(api_key='c25beebd44994e62a96ff204cad8043f')
@@ -84,10 +85,36 @@ def render_topic(topic_name):
         # return render_template('topic.html', topic=topic_name, articles_list=topic_articles, topics_list=top_topics, articles_left=left_articles, articles_right=right_articles)        
     return render_template('topic.html', topic=topic_name, article_lists=articles, message_list = messages)
 
+@app.route('/query/<my_query>')
+def get_query(my_query):
+    articles = []
+    messages = []
+
+    q = None
+    about_result = re.search('about (.+)', my_query)
+    if about_result != None:
+        my_topic = about_result.group(0).split(" ")[1]
+        print(my_topic)
+        print(type(my_topic))
+        topic_articles = get_topic(my_topic)
+        articles.append(topic_articles)
+        messages.append("All articles about <b>"+my_topic+"</b>")
+
+    my_alignment = None
+    alignment_result = re.search('from the (left|right)', my_query)
+    if alignment_result != None:
+        my_alignment = alignment_result.group(0).split(" ")[2]
+        alignment_articles = get_topic(my_topic, alignment=my_alignment)
+        articles.append(alignment_articles)
+        messages.append("All articles about <b>"+my_topic+"</b> from the "+my_alignment)
+
+    return render_template('topic.html', article_lists=articles, message_list = messages, query=my_query)
 
 @app.route('/viz')
 def viz():
     return render_template('sourceGraphs.html', topics_list=top_topics)
+
+
 
 
 @app.route('/get_topic/<topic_name>')
@@ -105,12 +132,13 @@ def get_topic(topic_name, **kwargs):
     if kwargs.get("alignment") != None:
         if kwargs.get("alignment") == "right":
             alignment_list = "fox-news,the-washington-times,breitbart-news,bloomberg"
-        # articles = newsapi.get_everything(q=topic_str, language='en', page_size=20, sources=alignment_list).get('articles')
-        # return process_dates(articles)
+
+    print("about to call get_everything")
 
     articles = newsapi.get_everything(q=topic_str, language='en', page_size=20, 
-        sources=alignment_list if kwargs.get("alignment") != None else None,
-        sort_by=kwargs.get("sort_by") if kwargs.get("sort_by") != None else None).get('articles')
+        sources=None if 'alignment' in kwargs else alignment_list, 
+        sort_by=None if 'sort_by' in kwargs else kwargs.get("sort_by")
+        ).get('articles')
     return process_dates(articles)
         
 

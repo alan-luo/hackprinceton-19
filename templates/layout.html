@@ -16,10 +16,12 @@
 		<div class="header">
 			<div class="logo"><h1>News Aggregator</h1></div>
 
-			<div class="search"><input type="text" placeholder="Try 'controversial bitcoin articles from the last month'"></div>
+			<div class="search"><input id="searchbar" type="text" placeholder="Try 'articles about bitcoin from the left'" value="{% if query is not none %}{{ query }}{% endif %}"></div>
 
 			<div class="graph-link">
-				<span class="icon-stats-dots"></span>
+				<a href="/viz">
+					<span class="icon-stats-dots"></span>
+				</a>
 			</div>
 		</div>
 		
@@ -29,6 +31,11 @@
 		</div>
 
 		<script>
+			$("#searchbar").keydown(function(e) {
+				if(e.keyCode == 13) {
+					window.location.href = "/query/"+$(this).val();
+				}
+			});
 			function filter(streamid) {
 				console.log("filtering on "+streamid);
 				var filters = [];
