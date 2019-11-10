@@ -228,22 +228,32 @@
 
 	#chart {
 		  position: relative;
-		  left:15%
+		  left:30%
 		}
 
 	#wrapper {
 	    position: relative;
-	    left:25%
+	    left:37%
 	}
 
 	#bias_label {
 	    position: relative;
-	    left:20%
+	    left:35%
 	}
 
 	#graph_label {
 	    position: relative;
-	    left:30%
+	    left:35%
+	}
+
+	#pie {
+	    position: relative;
+	    left:35%
+	}
+
+	#topic_coverage_label {
+	    position: relative;
+	    left:35%
 	}
 
 	.arc text {
@@ -276,7 +286,7 @@
 </head>
 <body>
 {% block content %}
-<h2 id="graph_label"> {{source}} Statistics </h2>
+<h3 id="graph_label"> {{source}} Statistics </h3>
 <div id="chart"></div>
 <script type="text/javascript">
 	var w = 300,
@@ -493,13 +503,15 @@
       })
     })
 </script>
+<h3 id="topic_coverage_id">Topic Coverage</h3>
+<div id="coverage_pie"></div>
 <script>
-    var div = d3.select("body").append("div").attr("class", "toolTip");
+    var div = d3.select("pie").append("div").attr("class", "toolTip");
 var dataset = [
-	{ name: 'Environment', total: 824, percent: 47.9 },
-	{ name: 'Gun Control', total: 167, percent: 11.1 },
-	{ name: 'Healthcare', total: 110, percent: 11.5 },
-	{ name: 'Abortion', total: 120, percent: 12.5 }
+	{ name: 'Environment', total: 824, percent: 40.9 },
+	{ name: 'Gun Control', total: 110, percent: 11.1 },
+	{ name: 'Healthcare', total: 167, percent: 32.5 },
+	{ name: 'Abortion', total: 127, percent: 25.5 }
 ];
 
 var width = 300,
