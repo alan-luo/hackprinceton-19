@@ -21,29 +21,8 @@ def main():
     # print(articles)
     return render_template('index.html', articles_list=articles, topics_list=top_topics)
 
-
-@app.route('/topic/<topic_name>')
-def render_topic(topic_name):
-    topic_articles = get_topic(topic_name)
-    return render_template('topic.html', topic=topic_name, articles_list=topic_articles, topics_list=top_topics)
-
-
-@app.route('/viz')
-def viz():
-    return render_template('sourceGraphs.html', topics_list=top_topics)
-
-
-@app.route('/get_topic/<topic_name>')
-def get_topic_view(topic_name):
-    return json.dumps(get_topic(topic_name))
-def get_topic(topic_name):
-    encoded = topic_name.encode("ascii")
-    if isinstance(topic_name, str):
-        topic_str = topic_name
-    else:
-        topic_str = encoded
-    articles = newsapi.get_everything(q=topic_str, language='en', page_size=20).get('articles')
-    # datetime.datetime.now() - datetime.datetime.strptime('2019-10-15T15:58:34Z', "%Y-%m-%dT%H:%M:%SZ")
+def process_dates(arts):
+    articles = arts
     for article in articles:
         article['publishedAt'] = article['publishedAt'][:19]
         mydate = datetime.datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%S")
@@ -63,6 +42,77 @@ def get_topic(topic_name):
             article['timesince'] = str(mydelta.days) + " day" + ("s" if mydelta.days > 1 else "")
         
     return articles
+
+@app.route('/topic/<topic_name>')
+def render_topic(topic_name):
+    articles = []
+    messages = []
+
+    topic_articles = get_topic(topic_name)
+    articles.append(topic_articles)
+    messages.append("All articles about <b>"+topic_name+"</b>")
+
+    if(topic_name == "impeachment"):
+        left_articles = get_topic(topic_name, alignment="left", sort_by="publishedAt")
+        articles.append(left_articles)
+        messages.append("Views from the left")
+        right_articles = get_topic(topic_name, alignment="right", sort_by="publishedAt")
+        articles.append(right_articles)
+        messages.append("Views from the right")
+    if(topic_name == "vaping"):
+        articles_1 = get_topic("vaping AND cdc", alignment="left", sort_by="publishedAt")
+        articles.append(articles_1)
+        messages.append("keyword: <b>cdc</b>")
+        articles_2 = get_topic("vaping AND death", alignment="right", sort_by="publishedAt")
+        articles.append(articles_2)
+        messages.append("keyword: <b>death</b>")
+    if(topic_name == "election"):
+        articles_1 = get_topic("election AND bernie sanders", alignment="left", sort_by="publishedAt")
+        articles.append(articles_1)
+        messages.append("keyword: <b>bernie sanders</b>")
+        articles_2 = get_topic("election AND donald trump", alignment="right", sort_by="publishedAt")
+        articles.append(articles_2)
+        messages.append("keyword: <b>donald trump</b>")
+    if(topic_name == "hong kong"):
+        articles_1 = get_topic("hong kong AND police", alignment="left", sort_by="publishedAt")
+        articles.append(articles_1)
+        messages.append("keyword: <b>police</b>")
+        articles_2 = get_topic("hong kong AND china", alignment="right", sort_by="publishedAt")
+        articles.append(articles_2)
+        messages.append("keyword: <b>china</b>")
+    
+        # return render_template('topic.html', topic=topic_name, articles_list=topic_articles, topics_list=top_topics, articles_left=left_articles, articles_right=right_articles)        
+    return render_template('topic.html', topic=topic_name, article_lists=articles, message_list = messages)
+
+
+@app.route('/viz')
+def viz():
+    return render_template('sourceGraphs.html', topics_list=top_topics)
+
+
+@app.route('/get_topic/<topic_name>')
+def get_topic_view(topic_name):
+    return json.dumps(get_topic(topic_name))
+def get_topic(topic_name, **kwargs):
+    encoded = topic_name.encode("ascii")
+    if isinstance(topic_name, str):
+        topic_str = topic_name
+    else:
+        topic_str = encoded
+
+
+    alignment_list = "cnn,the-new-york-times,bbc-news,the-huffington-post"
+    if kwargs.get("alignment") != None:
+        if kwargs.get("alignment") == "right":
+            alignment_list = "fox-news,the-washington-times,breitbart-news,bloomberg"
+        # articles = newsapi.get_everything(q=topic_str, language='en', page_size=20, sources=alignment_list).get('articles')
+        # return process_dates(articles)
+
+    articles = newsapi.get_everything(q=topic_str, language='en', page_size=20, 
+        sources=alignment_list if kwargs.get("alignment") != None else None,
+        sort_by=kwargs.get("sort_by") if kwargs.get("sort_by") != None else None).get('articles')
+    return process_dates(articles)
+        
 
 
 @app.route('/view-source-stats/<query>')
