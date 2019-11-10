@@ -20,7 +20,7 @@ def main():
     messages = []
     for topic in top_topics:
         articles.append(get_topic(topic))
-        messages.append("topic: <b>"+topic+"</b>")
+        messages.append("<a href='/topic/"+topic+"'>topic: <b>"+topic+"</b></a>")
 
     return render_template('topic.html', article_lists=articles, message_list = messages)
 
