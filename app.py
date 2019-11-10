@@ -8,9 +8,9 @@ app = Flask(__name__)
 newsapi = NewsApiClient(api_key='466f16c5dc2445eabe6a30991514a281')
 top_topics = ['impeachment', 'vaping', 'election', 'hong kong']
 news_source_stats = {
-    "CNN": {'Credibility': 0.59, 'Locality': 0.56, 'Liberal Bias': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48},
-    "BBC": {'Credibility': 0.90, 'Locality': 0.10, 'Liberal Bias': 0.50, 'Updatedness': 0.87, 'Sensationalism': 0.74},
-    "Spectator": {'Credibility': 0.40, 'Locality': 0.90, 'Liberal Bias': 0.88, 'Updatedness': 0.74, 'Sensationalism': 0.72}}
+    "CNN": {'Credibility': 0.59, 'Locality': 0.56, 'Writing Quality': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48, 'Bias': -74},
+    "BBC": {'Credibility': 0.90, 'Locality': 0.10, 'Writing Quality': 0.50, 'Updatedness': 0.87, 'Sensationalism': 0.74, 'Bias': 6},
+    "Spectator": {'Credibility': 0.40, 'Locality': 0.90, 'Writing Quality': 0.88, 'Updatedness': 0.74, 'Sensationalism': 0.72, 'Bias': -84}}
 
 
 @app.route('/')
