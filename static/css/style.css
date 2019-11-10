@@ -142,7 +142,7 @@ body {
 }
 .stream {
 	width:100%;
-	height:calc(var(--box-size) + 20px);
+	height:calc(var(--box-size) + 50px);
 	display:flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
