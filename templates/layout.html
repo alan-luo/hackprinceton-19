@@ -16,7 +16,7 @@
 		<div class="header">
 			<div class="logo"><h1>News Aggregator</h1></div>
 
-			<div class="search"><input type="text" placeholder="Try 'controversial bitcoin articles from the last month'"></div>
+			<div class="search"><input id="searchbar" type="text" placeholder="Try 'articles about bitcoin from the left in the last 10 days'"></div>
 
 			<div class="graph-link">
 				<span class="icon-stats-dots"></span>
@@ -29,6 +29,11 @@
 		</div>
 
 		<script>
+			$("#searchbar").keydown(function(e) {
+				if(e.keyCode == 13) {
+					window.location.href = "/query/"+$(this).val();
+				}
+			});
 			function filter(streamid) {
 				console.log("filtering on "+streamid);
 				var filters = [];

@@ -58,7 +58,12 @@ body {
 	color:#888;
 	font-weight:300;
 	width:600px;
-
+	transition:all 0.2s;
+	border:1px solid #e3e3e3;
+}
+.search input:focus {
+	background:white;
+	color:black;
 }
 
 .graph-link {
