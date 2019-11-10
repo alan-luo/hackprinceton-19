@@ -96,8 +96,6 @@ def get_query(my_query):
     about_result = re.search('about (.+)', my_query)
     if about_result != None:
         my_topic = about_result.group(0).split(" ")[1]
-        print(my_topic)
-        print(type(my_topic))
         topic_articles = get_topic(my_topic)
         articles.append(topic_articles)
         messages.append("All articles about <b>"+my_topic+"</b>")
@@ -134,8 +132,6 @@ def get_topic(topic_name, **kwargs):
     if kwargs.get("alignment") != None:
         if kwargs.get("alignment") == "right":
             alignment_list = "fox-news,the-washington-times,breitbart-news,bloomberg"
-
-    print("about to call get_everything")
 
     articles = newsapi.get_everything(q=topic_str, language='en', page_size=20, 
         sources=None if 'alignment' in kwargs else alignment_list, 
