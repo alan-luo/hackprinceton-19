@@ -91,14 +91,20 @@ var lineAttributes = axes
 // <text x="20" y="20" font-family="sans-serif" font-size="20px" fill="black">Liberal                                                         Conservative</text>;
 // <text x="70" y="70" font-family="sans-serif" font-size="20px" fill="red">Hello!</text>;
 
+var jsonCircles = [];
+for (key in source_data){
+	jsonCircles.push({"x_axis": 375 + source_data[key]['Bias']*3.8, "y_axis": source_data[key]['Locality']*500, "radius": 5+source_data[key]['Impact']*3, "id": source_data[key], "name": source_data[key]['Name']});
+}
+
+
 //circles!
-var jsonCircles = [
-   { "x_axis": 400, "y_axis": 150, "radius": 5, "id": "the-new-york-times", "name": "The New York Times"},
-   { "x_axis": 450, "y_axis": 237, "radius": 10, "color" : "purple", "id": "cnn", "name": "CNN"},
-   { "x_axis": 50, "y_axis": 450, "radius": 30, "color" : "red", "id": "cnbc", "name": "CNBC"},
-   { "x_axis": 500, "y_axis": 120, "radius": 20, "color" : "blue", "id": "nbc-news", "name": "NBC News"},
-   { "x_axis": 560, "y_axis": 300, "radius": 10, "color" : "purple", "id": "business-insider", "name": "Business Insider"},
-   { "x_axis": 700, "y_axis": 390, "radius": 20, "color" : "red", "id": "the-spectator", "name": "The Columbia Daily Spectator"}];
+// var jsonCircles = [
+//    { "x_axis": 400, "y_axis": 150, "radius": 5, "id": "the-new-york-times", "name": "The New York Times"},
+//    { "x_axis": 450, "y_axis": 237, "radius": 10, "color" : "purple", "id": "cnn", "name": "CNN"},
+//    { "x_axis": 50, "y_axis": 450, "radius": 30, "color" : "red", "id": "cnbc", "name": "CNBC"},
+//    { "x_axis": 500, "y_axis": 120, "radius": 20, "color" : "blue", "id": "nbc-news", "name": "NBC News"},
+//    { "x_axis": 560, "y_axis": 300, "radius": 10, "color" : "purple", "id": "business-insider", "name": "Business Insider"},
+//    { "x_axis": 700, "y_axis": 390, "radius": 20, "color" : "red", "id": "the-spectator", "name": "The Columbia Daily Spectator"}];
  
 // var svgContainer = d3.select("body").append("svg")
 //                                     .attr("width", 900)
@@ -118,12 +124,11 @@ var circleAttributes = circles
 					   .on("mouseover", function(d) {
 						   
 							d3.select(this).attr("r", function (d) { return d.radius*1.5; });
+							console.log(d.name);
 						   return tooltip.style("visibility", "visible").text(d.name).style("top", (event.pageY - 30) + "px").style("left", event.pageX + "px");
-						
 						})
 				       //.on("mouseover", function() {return tooltip.style("top", (event.pageY - 30) + "px").style("left", event.pageX + "px");})
 					   .on("click",function(d){ return loadPage(d.id)})
-						///view-source-stats/<id>
 					   .on("mouseout", function(d) {
 						d3.select(this).attr("r", function (d) { return d.radius; });
 							return tooltip.style("visibility", "hidden");
