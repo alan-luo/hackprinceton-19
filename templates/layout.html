@@ -5,9 +5,10 @@
 		<link rel="stylesheet" href="../static/css/style.css">
 		<link rel="stylesheet" href="../static/css/icomoon.css">
 		<script
-  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
-  crossorigin="anonymous"></script>
+		  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+		  crossorigin="anonymous"></script>
+		<script src="../static/js/data.js"></script>
 
 		<title>{% block title %}{% endblock %}</title>
 		{% endblock %}
@@ -31,11 +32,7 @@
 		</div>
 
 		<script>
-			$("#searchbar").keydown(function(e) {
-				if(e.keyCode == 13) {
-					window.location.href = "/query/"+$(this).val();
-				}
-			});
+			
 			function filter(streamid) {
 				console.log("filtering on "+streamid);
 				var filters = [];
@@ -64,25 +61,90 @@
 					}
 				});
 			}
-			$(".filter-input").keypress(function(e) {
-				if(e.keyCode == 13) {
-					var myfilter = $(this).val();
-					var filtertext = myfilter;
+			var data = {};
+			function getStorage() {
+				data = JSON.parse(localStorage.getItem('our-data'));
+				if(!data) data = {};
+				if(!data.clicks) data.clicks = {};
+				if(!data.votes) data.votes = {};
+			}
+			function setStorage() {
+				localStorage.setItem('our-data',JSON.stringify(data));
+			}
+			getStorage();
 
-					if(myfilter.match(/[0-9]+ days*/) != null) {
-						filtertext = `<b>within</b> ${myfilter}`;
+			function updateFromVotes() {
+				for(key in data.clicks) {
+					if(data.clicks[key] == 1 || data.clicks[key] == -1) {
+						var arrows = $(`a[href="${key}"]`).parent().parent().parent().children().last().children().last().children();
+						if(data.clicks[key] == 1) {
+							arrows.first().css('color','#ff4a4a');
+							arrows.last().css('color','black');
+						} else {
+							arrows.first().css('color','black');
+							arrows.last().css('color','#0099ff');
+						}
 					}
-					var streamid = $(this).attr("data-streamid");
-					var filterspan = $(`<span>${filtertext}</span>`).click(function() {
-						var myid = $(this).parent().attr("data-streamid");
-						$(this).remove();
-						filter(myid);
-					});
-					$(`.filterlist[data-streamid="${streamid}"]`).append(filterspan);
-					$(this).val("");
-					filter(streamid);
 				}
-			});
+			}
+
+			window.onload = function() {
+				$(".filter-input").keypress(function(e) {
+					if(e.keyCode == 13) {
+						var myfilter = $(this).val();
+						var filtertext = myfilter;
+
+						if(myfilter.match(/[0-9]+ days*/) != null) {
+							filtertext = `<b>within</b> ${myfilter}`;
+						}
+						var streamid = $(this).attr("data-streamid");
+						var filterspan = $(`<span>${filtertext}</span>`).click(function() {
+							var myid = $(this).parent().attr("data-streamid");
+							$(this).remove();
+							filter(myid);
+						});
+						$(`.filterlist[data-streamid="${streamid}"]`).append(filterspan);
+						$(this).val("");
+						filter(streamid);
+					}
+				});
+				$("#searchbar").keydown(function(e) {
+					if(e.keyCode == 13) {
+						window.location.href = "/query/"+$(this).val();
+					}
+				});
+				$(".icon-arrow-up").click(function() {
+					//first save if it's been clicked
+					var href = $(this).parent().parent().parent().children().first().children().children().first().attr("href");
+					data.clicks[href] = 1;
+					console.log(href);
+
+
+					//then update for the website
+					var id = $(this).parent().attr("data-sourceid");
+					console.log(id);
+					if(!data.votes[id]) data.votes[id] = 0;
+					data.votes[id]++;
+					setStorage();
+					updateFromVotes();
+				});
+				$(".icon-arrow-down").click(function() {
+					//first save if it's been clicked
+					var href = $(this).parent().parent().parent().children().first().children().children().first().attr("href");
+					data.clicks[href] = -1;
+					console.log(href);
+
+
+					//then update for the website
+					var id = $(this).parent().attr("data-sourceid");
+					console.log(id);
+					if(!data.votes[id]) data.votes[id] = 0;
+					data.votes[id]--;
+					setStorage();
+					updateFromVotes();
+				});
+				updateFromVotes();
+			};
 		</script>
 	</body>
 </html>
