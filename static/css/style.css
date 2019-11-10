@@ -40,6 +40,10 @@ body {
 	font-weight:400;
 	line-height:var(--header-height);
 }
+.logo a {
+	color:black;
+	text-decoration: none;
+}
 .logo, .graph-link {
 	width:200px;
 }

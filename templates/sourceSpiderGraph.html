@@ -300,13 +300,6 @@
     //Data
     var d = [
               [
-                {axis:"Credibility" , value:{{ source_data["Credibility"] }} },
-                {axis:"Locality",value:{{ source_data["Locality"] }}},
-                {axis:"Writing Quality",value:{{ source_data["Writing Quality"] }}},
-                {axis:"Updatedness",value:{{ source_data["Updatedness"] }}},
-                {axis:"Sensationalism",value:{{ source_data["Sensationalism"] }}}
-              ],
-              [
                 {axis:"Credibility" ,value:{{ source_data["Credibility"] }}},
                 {axis:"Locality",value:{{ source_data["Locality"] }}},
                 {axis:"Writing Quality",value:{{ source_data["Writing Quality"] }}},
@@ -314,6 +307,13 @@
                 {axis:"Sensationalism",value:{{ source_data["Sensationalism"] }}}
               ]
             ];
+
+    var source_id = '{{ source_id }}';
+    console.log(d);
+    if(data.votes[source_id]>0) d[0][0].value = 1.0;
+    else if(data.votes[source_id]<0) d[0][0].value = 0.5;
+    else d[0][0].value = 0.75;
+
 
     //Options for the Radar chart, other than default
     var mycfg = {

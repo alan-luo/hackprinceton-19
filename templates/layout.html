@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<div class="header">
-			<div class="logo"><h1>News Aggregator</h1></div>
+			<div class="logo"><a href="/"><h1>News Aggregator</h1></a></div>
 
 			<div class="search"><input id="searchbar" type="text" placeholder="Try 'articles about bitcoin from the left'" value="{% if query is not none %}{{ query }}{% endif %}"></div>
 
@@ -25,7 +25,19 @@
 				</a>
 			</div>
 		</div>
-		
+		<script>
+			var data = {};
+			function getStorage() {
+				data = JSON.parse(localStorage.getItem('our-data'));
+				if(!data) data = {};
+				if(!data.clicks) data.clicks = {};
+				if(!data.votes) data.votes = {};
+			}
+			function setStorage() {
+				localStorage.setItem('our-data',JSON.stringify(data));
+			}
+			getStorage();
+		</script>
 		<div class="container">
 			{% block content %}
 			{% endblock %}
@@ -61,17 +73,6 @@
 					}
 				});
 			}
-			var data = {};
-			function getStorage() {
-				data = JSON.parse(localStorage.getItem('our-data'));
-				if(!data) data = {};
-				if(!data.clicks) data.clicks = {};
-				if(!data.votes) data.votes = {};
-			}
-			function setStorage() {
-				localStorage.setItem('our-data',JSON.stringify(data));
-			}
-			getStorage();
 
 			function updateFromVotes() {
 				for(key in data.clicks) {

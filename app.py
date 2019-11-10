@@ -163,7 +163,7 @@ def view_news_source_stats(query):
     data = get_news_source_stats(query)
     source_dict = news_source_stats[query]
     name = source_dict.get('Name')
-    return render_template('sourceSpiderGraph.html', source_data=data, source=name)
+    return render_template('sourceSpiderGraph.html', source_data=data, source=name, source_id=query)
 
 
 @app.route('/get-source-stats/<query>')
