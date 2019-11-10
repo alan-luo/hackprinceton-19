@@ -154,7 +154,8 @@ body {
 	margin-right:10px;
 	margin-top:10px;
 	white-space: nowrap;
-	overflow-x:scroll;
+	/*overflow-x:scroll;*/
+	overflow:hidden;
 }
 .si-header h3 a {
 	text-decoration: none;
