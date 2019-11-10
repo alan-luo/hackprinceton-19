@@ -5,7 +5,7 @@ import datetime
 import json
 
 app = Flask(__name__)
-newsapi = NewsApiClient(api_key='466f16c5dc2445eabe6a30991514a281')
+newsapi = NewsApiClient(api_key='c25beebd44994e62a96ff204cad8043f')
 top_topics = ['impeachment', 'vaping', 'election', 'hong kong']
 news_source_stats = {
     "CNN": {'Credibility': 0.59, 'Locality': 0.56, 'Writing Quality': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48, 'Bias': -74},
