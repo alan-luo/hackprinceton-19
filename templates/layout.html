@@ -1,7 +1,7 @@
 <html>
 	<head>
 		{% block head %}
-		<link href="https://fonts.googleapis.com/css?family=Lato:300,400|Noto+Serif+JP:400,700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Noto+Serif+JP:400,700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="../static/css/style.css">
 		<link rel="stylesheet" href="../static/css/icomoon.css">
 		<script
@@ -16,7 +16,7 @@
 		<div class="header">
 			<div class="logo"><h1>News Aggregator</h1></div>
 
-			<div class="search"><input type="text" placeholder="Try 'controversial bitcoin articles from the last month'"></div>
+			<div class="search"><input id="searchbar" type="text" placeholder="Try 'articles about bitcoin from the left in the last 10 days'"></div>
 
 			<div class="graph-link">
 				<span class="icon-stats-dots"></span>
@@ -27,5 +27,60 @@
 			{% block content %}
 			{% endblock %}
 		</div>
+
+		<script>
+			$("#searchbar").keydown(function(e) {
+				if(e.keyCode == 13) {
+					window.location.href = "/query/"+$(this).val();
+				}
+			});
+			function filter(streamid) {
+				console.log("filtering on "+streamid);
+				var filters = [];
+				$(`.filterlist[data-streamid="${streamid}"]`).children().each(function() {
+					filters.push($(this).text());
+				});
+				console.log(filters);
+				var stream = $(`.stream[data-streamid="${streamid}"]`);
+				stream.children().each(function() {
+					$(this).show();
+					for(var i=0; i<filters.length; i++) {
+						if(filters[i].substring(0,6) == "within") {
+							number_days = parseInt(filters[i].split()[1]);
+							// testvar = $(this).children();
+							var daystr = $(this).children().get(2).textContent.split("| ")[1].split(" ");
+							if(daystr[1] == "days" || daystr[0] == "day") {
+								if(parseInt(daystr[0]) > parseInt(filters[i].split(" ")[1])) {
+									$(this).hide();
+								}
+							}
+						} else {
+							if($(this).text().toLowerCase().match(new RegExp(filters[i].toLowerCase()),"g") == null) {
+								$(this).hide();
+							}
+						}
+					}
+				});
+			}
+			$(".filter-input").keypress(function(e) {
+				if(e.keyCode == 13) {
+					var myfilter = $(this).val();
+					var filtertext = myfilter;
+
+					if(myfilter.match(/[0-9]+ days*/) != null) {
+						filtertext = `<b>within</b> ${myfilter}`;
+					}
+					var streamid = $(this).attr("data-streamid");
+					var filterspan = $(`<span>${filtertext}</span>`).click(function() {
+						var myid = $(this).parent().attr("data-streamid");
+						$(this).remove();
+						filter(myid);
+					});
+					$(`.filterlist[data-streamid="${streamid}"]`).append(filterspan);
+					$(this).val("");
+					filter(streamid);
+				}
+			});
+		</script>
 	</body>
 </html>

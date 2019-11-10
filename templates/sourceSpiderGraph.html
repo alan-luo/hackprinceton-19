@@ -227,10 +227,24 @@
     <style>
 
 	#chart {
-		  position: static;
+		  position: relative;
+		  left:15%
 		}
 
+	#wrapper {
+	    position: relative;
+	    left:25%
+	}
 
+	#bias_label {
+	    position: relative;
+	    left:20%
+	}
+
+	#graph_label {
+	    position: relative;
+	    left:30%
+	}
 
     </style>
 
@@ -238,11 +252,11 @@
 </head>
 <body>
 {% block content %}
-<h> {{source}}</h>
+<h2 id="graph_label"> {{source}} Statistics </h2>
 <div id="chart"></div>
 <script type="text/javascript">
-	var w = 500,
-	h = 500;
+	var w = 300,
+	h = 300;
 
     var colorscale = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -254,14 +268,14 @@
               [
                 {axis:"Credibility" , value:{{ source_data["Credibility"] }} },
                 {axis:"Locality",value:{{ source_data["Locality"] }}},
-                {axis:"Liberal Bias",value:{{ source_data["Liberal Bias"] }}},
+                {axis:"Writing Quality",value:{{ source_data["Writing Quality"] }}},
                 {axis:"Updatedness",value:{{ source_data["Updatedness"] }}},
                 {axis:"Sensationalism",value:{{ source_data["Sensationalism"] }}}
               ],
               [
                 {axis:"Credibility" ,value:{{ source_data["Credibility"] }}},
                 {axis:"Locality",value:{{ source_data["Locality"] }}},
-                {axis:"Liberal Bias",value:{{ source_data["Liberal Bias"] }}},
+                {axis:"Writing Quality",value:{{ source_data["Writing Quality"] }}},
                 {axis:"Updatedness",value:{{ source_data["Updatedness"] }}},
                 {axis:"Sensationalism",value:{{ source_data["Sensationalism"] }}}
               ]
@@ -272,7 +286,7 @@
       w: w,
       h: h,
       maxValue: 1,
-      levels: 10,
+      levels: 5,
       ExtraWidthX: 300
     }
 
@@ -334,6 +348,126 @@
 
 
 </script>
-
+<h3 id="bias_label">Liberal (left) or Conservative (right) Bias</h3>
+<div id="wrapper"></div>
+<script>
+    function renderChart (wrapper, curData) {
+      if (!wrapper) {
+        return
+      }
+      const { select: d3Select, range: d3Range, rgb: d3Rgb,
+        scaleLinear: d3ScaleLinear, line: d3Line, curveLinear: d3CurveLinear,
+        arc: d3Arc, interpolateHsl: d3InterpolateHsl, easeElastic: d3EaseElastic,
+      } = d3
+      const width = 300
+      const height = 150
+      const minValue = curData.minValue
+      const maxValue = curData.maxValue
+      const curValue = curData.curValue
+      const radius = height - 10
+      const majorTicks = 5
+      const DURATION = 1500
+      const labelInset = 15
+      const ringWidth = 60
+      const ringInset = 20
+      const minAngle = -90
+      const maxAngle = 90
+      const range = maxAngle - minAngle
+      const arcColorFn = d3InterpolateHsl(d3Rgb('#5194f0'), d3Rgb('#f05151'))
+      const arrowColor = '#221f1f'
+      const arc = d3Arc()
+        .innerRadius(radius - ringWidth - ringInset)
+        .outerRadius(radius - ringInset)
+        .startAngle((d, i) => {
+          const ratio = d * i
+          return deg2rad(minAngle + (ratio * range))
+        })
+        .endAngle((d, i) => {
+          const ratio = d * (i + 1)
+          return deg2rad(minAngle + (ratio * range))
+        })
+      const svgData = d3Select(wrapper).selectAll('svg').data(['dummy data'])
+      const tickData = d3Range(majorTicks).map(() => 1/majorTicks)
+      const svgEnter = svgData.enter().append('svg')
+      svgEnter.attr('width', width)
+      svgEnter.attr('height', height)
+      const svgMerge = svgData.merge(svgEnter)
+      const centerTx = centerTranslation(radius)
+      // sections
+      const arcsData = svgMerge.selectAll('g.arc').data(tickData)
+      const arcsEnter = arcsData.enter()
+        .append('g')
+        .attr('class', 'arc')
+        .attr('transform', centerTx)
+      arcsEnter.append('path')
+        .attr('fill', (d, i) => arcColorFn(d * (i + 1)))
+        .attr('d', arc)
+      arcsData.merge(arcsEnter)
+      // labels on sections
+      const scaleValue = d3ScaleLinear()
+        .range([0, 1])
+        .domain([minValue, maxValue])
+      const ticks = scaleValue.ticks(majorTicks)
+      const labelsData = svgMerge.selectAll('g.label').data(ticks)
+      const labelsEnter = labelsData.enter()
+        .append('g')
+        .attr('class', 'label')
+        .attr('transform', centerTx)
+      labelsData.exit().remove()
+      labelsEnter
+        .append('text')
+        .text(d => d)
+      const labelsMerge = labelsData.merge(labelsEnter)
+      labelsMerge.select('text')
+        .text(d => d)
+        .transition()
+        .duration(DURATION)
+        .attr('transform', (d) => {
+          const ratio = scaleValue(d)
+          const newAngle = minAngle + (ratio * range)
+          return 'rotate(' + newAngle + ') translate(0,' + (labelInset - radius) + ')'
+        })
+      const pointerWidth = 10
+      const pointerHeadLengthPercent = 0.9
+      const pointerHeadLength = Math.round(radius * pointerHeadLengthPercent)
+      const pointerTailLength = 5
+      const lineData = [[pointerWidth / 2, 0],
+        [0, -pointerHeadLength],
+        [-(pointerWidth / 2), 0],
+        [0, pointerTailLength],
+        [pointerWidth / 2, 0]]
+      const pointerLine = d3Line().curve(d3CurveLinear)
+      const pointerData = svgMerge.selectAll('g.pointer').data([lineData])
+      const pointerEnter = pointerData.enter()
+        .append('g')
+        .attr('class', 'pointer')
+        .attr('transform', centerTx)
+      pointerEnter.append('path')
+        .attr('d', pointerLine)
+        .attr('transform', 'rotate(' + minAngle + ')')
+        .attr('fill', arrowColor)
+      const pointerMerge = pointerData.merge(pointerEnter)
+      const ratio = scaleValue(curValue)
+      const newAngle = minAngle + (ratio * range)
+      pointerMerge.select('path')
+        .transition()
+        .duration(DURATION)
+        .ease(d3EaseElastic)
+        .attr('transform', 'rotate(' + newAngle + ')')
+    }
+    function centerTranslation (r) {
+      return 'translate(' + r + ',' + r + ')'
+    }
+    function deg2rad (deg) {
+      return deg * Math.PI / 180
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const maxValue = 100
+      const minValue = -100
+      renderChart(document.querySelector('#wrapper'), {
+        minValue, curValue: {{ source_data["Bias"] }}, maxValue,
+      })
+    })
+</script>
 {% endblock %}
 </body>

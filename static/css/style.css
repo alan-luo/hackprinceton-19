@@ -10,6 +10,12 @@ body {
 	margin:0;
 	padding:0;
 }
+.hidden {
+	display:none;
+	position:absolute;
+	top:-9999px;
+	left:-9999px;
+}
 .header {
 	position:fixed;
 	top:0;
@@ -52,7 +58,12 @@ body {
 	color:#888;
 	font-weight:300;
 	width:600px;
-
+	transition:all 0.2s;
+	border:1px solid #e3e3e3;
+}
+.search input:focus {
+	background:white;
+	color:black;
 }
 
 .graph-link {
@@ -88,6 +99,12 @@ body {
 	padding:3px;
 	border-radius:8px;
 }
+.filterlist {
+	display:inline;
+}
+.filterlist span {
+	margin-right:5px;
+}
 .stream-nav div input {
 	background:#e3e3e3;
 	outline: none;
@@ -100,6 +117,19 @@ body {
 	content:'x';
 	margin-right:10px;
 	color:#aaa;
+}
+.stream-nav b {
+	font-weight:700;
+}
+.stream-nav a {
+	text-decoration:none;
+	color:black;
+}
+.stream-nav a:hover {
+	text-decoration:underline;
+}
+.stream-nav a:active {
+	color:#e3e3e3;
 }
 .stream {
 	width:100%;
@@ -124,6 +154,8 @@ body {
 	float:left;
 	flex:0 0 auto;
 	
+/*	overflow:hidden;
+	max-height:150px;*/
 }
 .si-header {
 	top:0;
@@ -139,7 +171,8 @@ body {
 	margin-right:10px;
 	margin-top:10px;
 	white-space: nowrap;
-	overflow-x:scroll;
+	/*overflow-x:scroll;*/
+	overflow:hidden;
 }
 .si-header h3 a {
 	text-decoration: none;
@@ -153,6 +186,9 @@ body {
 	margin:10px;
 	font-family: "Noto Serif JP", serif;
 	font-size:10pt;
+
+	max-height:150px;
+	overflow:hidden;
 }
 .si-footer {
 	bottom:0;
