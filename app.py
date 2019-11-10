@@ -17,10 +17,12 @@ news_source_stats = {
 @app.route('/')
 def main():
     articles = []
+    messages = []
     for topic in top_topics:
         articles.append(get_topic(topic))
-    # print(articles)
-    return render_template('index.html', articles_list=articles, topics_list=top_topics)
+        messages.append("topic: <b>"+topic+"</b>")
+
+    return render_template('topic.html', article_lists=articles, message_list = messages)
 
 def process_dates(arts):
     articles = arts
