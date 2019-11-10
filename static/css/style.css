@@ -43,6 +43,10 @@ body {
 .logo, .graph-link {
 	width:200px;
 }
+.graph-link a {
+	color:black;
+	text-decoration: none;
+}
 .search {
 	display:flex;
 	flex-direction: column;
@@ -73,7 +77,8 @@ body {
 .graph-link span {
 	font-size:24pt;
 	margin-right:10px;
-	margin-top:9px;
+	margin-top:15px;
+	line-height:55px;
 }
 .stream-nav {
 	width:calc(100% - 20px);

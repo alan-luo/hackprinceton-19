@@ -96,25 +96,19 @@ def get_query(my_query):
         my_topic = about_result.group(0).split(" ")[1]
         print(my_topic)
         print(type(my_topic))
-        topic_articles = get_topic('bitcoin')
+        topic_articles = get_topic(my_topic)
         articles.append(topic_articles)
         messages.append("All articles about <b>"+my_topic+"</b>")
 
     my_alignment = None
     alignment_result = re.search('from the (left|right)', my_query)
     if alignment_result != None:
-        my_alignment = alignment_result.group(0).split(" ")[1]
+        my_alignment = alignment_result.group(0).split(" ")[2]
         alignment_articles = get_topic(my_topic, alignment=my_alignment)
         articles.append(alignment_articles)
         messages.append("All articles about <b>"+my_topic+"</b> from the "+my_alignment)
 
-    # after_result = re.search('after (.+)', my_query)
-
-    # before_result = re.search('before (.+)', my_query)
-
-    # from_result = re.search('from (.+)', my_query)
-    
-    return render_template('topic.html', article_lists=articles, message_list = messages)
+    return render_template('topic.html', article_lists=articles, message_list = messages, query=my_query)
 
 @app.route('/viz')
 def viz():
