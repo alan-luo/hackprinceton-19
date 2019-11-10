@@ -146,10 +146,15 @@ body {
 	display:flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	overflow-x: auto;
+	overflow-x: scroll;
 	overflow-y: hidden;
-	
 }
+.stream::-webkit-scrollbar { width: 0 !important }
+.stream {
+	overflow: -moz-scrollbars-none;
+	-ms-overflow-style: none;
+}
+
 .stream-item {
 	width:var(--box-size);
 	height:var(--box-size);
