@@ -10,6 +10,12 @@ body {
 	margin:0;
 	padding:0;
 }
+.hidden {
+	display:none;
+	position:absolute;
+	top:-9999px;
+	left:-9999px;
+}
 .header {
 	position:fixed;
 	top:0;
@@ -87,6 +93,12 @@ body {
 	font-size:10pt;
 	padding:3px;
 	border-radius:8px;
+}
+.filterlist {
+	display:inline;
+}
+.filterlist span {
+	margin-right:5px;
 }
 .stream-nav div input {
 	background:#e3e3e3;
