@@ -38,8 +38,6 @@ def get_topic(topic_name):
     else:
         topic_str = encoded
     myobj = newsapi.get_everything(q=topic_str, language='en', page_size=20).get('articles')
-    print "getting from " + topic_name
-    print len(myobj)
     return myobj
 
 
