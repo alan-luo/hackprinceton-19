@@ -83,6 +83,63 @@
 					filter(streamid);
 				}
 			});
+			var data = {};
+			function getStorage() {
+				data = JSON.parse(localStorage.getItem('our-data'));
+				if(!data) data = {};
+				if(!data.clicks) data.clicks = {};
+				if(!data.votes) data.votes = {};
+			}
+			function setStorage() {
+				localStorage.setItem('our-data',JSON.stringify(data));
+			}
+			$(".icon-arrow-up").click(function() {
+				//first save if it's been clicked
+				var href = $(this).parent().parent().parent().children().first().children().children().first().attr("href");
+				data.clicks[href] = 1;
+				console.log(href);
+
+
+				//then update for the website
+				var id = $(this).parent().attr("data-sourceid");
+				console.log(id);
+				if(!data.votes[id]) data.votes[id] = 0;
+				data.votes[id]++;
+				setStorage();
+				updateFromVotes();
+			});
+			$(".icon-arrow-down").click(function() {
+				//first save if it's been clicked
+				var href = $(this).parent().parent().parent().children().first().children().children().first().attr("href");
+				data.clicks[href] = -1;
+				console.log(href);
+
+
+				//then update for the website
+				var id = $(this).parent().attr("data-sourceid");
+				console.log(id);
+				if(!data.votes[id]) data.votes[id] = 0;
+				data.votes[id]--;
+				setStorage();
+				updateFromVotes();
+			});
+			getStorage();
+
+			function updateFromVotes() {
+				for(key in data.clicks) {
+					if(data.clicks[key] == 1 || data.clicks[key] == -1) {
+						var arrows = $(`a[href="${key}"]`).parent().parent().parent().children().last().children().last().children();
+						if(data.clicks[key] == 1) {
+							arrows.first().css('color','#ff4a4a');
+							arrows.last().css('color','black');
+						} else {
+							arrows.first().css('color','black');
+							arrows.last().css('color','#0099ff');
+						}
+					}
+				}
+			}
+			updateFromVotes();
 		</script>
 	</body>
 </html>

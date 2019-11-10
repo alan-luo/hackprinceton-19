@@ -22,7 +22,7 @@
 			<div class="si-body"><p>{{ article['description'] }}</p></div>
 			<div class="si-footer">
 				<p>{{ article['source']['name'] }} | {{ article['timesince'] }}</p>
-				<p><span class="icon-arrow-up"></span><span class="icon-arrow-down"></span></p>
+				<p data-sourceid="{{ article['source']['id'] }}"><span class="icon-arrow-up"></span><span class="icon-arrow-down"></span></p>
 			</div>
 		</div>
 		{% endfor %}
