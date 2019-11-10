@@ -46,21 +46,20 @@
 		<script>
 			
 			function filter(streamid) {
-				console.log("filtering on "+streamid);
 				var filters = [];
 				$(`.filterlist[data-streamid="${streamid}"]`).children().each(function() {
 					filters.push($(this).text());
 				});
-				console.log(filters);
 				var stream = $(`.stream[data-streamid="${streamid}"]`);
 				stream.children().each(function() {
 					$(this).show();
 					for(var i=0; i<filters.length; i++) {
 						if(filters[i].substring(0,6) == "within") {
-							number_days = parseInt(filters[i].split()[1]);
+							number_days = parseInt(filters[i].split(" ")[1]);
 							// testvar = $(this).children();
 							var daystr = $(this).children().get(2).textContent.split("| ")[1].split(" ");
-							if(daystr[1] == "days" || daystr[0] == "day") {
+							if(daystr[1].substring(0,4) == "days" || daystr[1].substring(0,3) == "day") {
+
 								if(parseInt(daystr[0]) > parseInt(filters[i].split(" ")[1])) {
 									$(this).hide();
 								}
