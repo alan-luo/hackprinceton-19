@@ -93,7 +93,7 @@ var lineAttributes = axes
 
 var jsonCircles = [];
 for (key in source_data){
-	jsonCircles.push({"x_axis": 375 + source_data[key]['Bias']*3.8, "y_axis": source_data[key]['Locality']*500, "radius": 5+source_data[key]['Impact']*3, "id": source_data[key], "name": source_data[key]['Name']});
+	jsonCircles.push({"x_axis": 375 + source_data[key]['Bias']*3.8, "y_axis": 20+source_data[key]['Locality']*500, "radius": 5+source_data[key]['Impact']*3, "id": key, "name": source_data[key]['Name']});
 }
 
 
@@ -121,10 +121,10 @@ var circleAttributes = circles
                        .attr("r", function (d) { return d.radius; })
                        .style("fill", function(d) { return `rgb(${(d.x_axis)*255/w},${0},${255-((d.x_axis)*255/w)})`; })
 					   .style("transition", function(d){return "all 0.2s"})
+					   .style("stroke", "white")
 					   .on("mouseover", function(d) {
 						   
 							d3.select(this).attr("r", function (d) { return d.radius*1.5; });
-							console.log(d.name);
 						   return tooltip.style("visibility", "visible").text(d.name).style("top", (event.pageY - 30) + "px").style("left", event.pageX + "px");
 						})
 				       //.on("mouseover", function() {return tooltip.style("top", (event.pageY - 30) + "px").style("left", event.pageX + "px");})
