@@ -8,9 +8,9 @@ app = Flask(__name__)
 newsapi = NewsApiClient(api_key='c25beebd44994e62a96ff204cad8043f')
 top_topics = ['impeachment', 'vaping', 'election', 'hong kong']
 news_source_stats = {
-    "CNN": {'Credibility': 0.59, 'Locality': 0.56, 'Writing Quality': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48, 'Bias': -74},
-    "BBC": {'Credibility': 0.90, 'Locality': 0.10, 'Writing Quality': 0.50, 'Updatedness': 0.87, 'Sensationalism': 0.74, 'Bias': 6},
-    "Spectator": {'Credibility': 0.40, 'Locality': 0.90, 'Writing Quality': 0.88, 'Updatedness': 0.74, 'Sensationalism': 0.72, 'Bias': -84}}
+    "cnn": {'Name': 'CNN', 'Credibility': 0.59, 'Locality': 0.56, 'Writing Quality': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48, 'Bias': -74},
+    "bbc": {'Name': 'BBC', 'Credibility': 0.90, 'Locality': 0.10, 'Writing Quality': 0.50, 'Updatedness': 0.87, 'Sensationalism': 0.74, 'Bias': 6},
+    "spectator": {'Name': 'Spectator', 'Credibility': 0.40, 'Locality': 0.90, 'Writing Quality': 0.88, 'Updatedness': 0.74, 'Sensationalism': 0.72, 'Bias': -84}}
 
 
 @app.route('/')
@@ -118,7 +118,9 @@ def get_topic(topic_name, **kwargs):
 @app.route('/view-source-stats/<query>')
 def view_news_source_stats(query):
     data = get_news_source_stats(query)
-    return render_template('sourceSpiderGraph.html', source_data=data, source=query)
+    source_dict = news_source_stats[query]
+    name = source_dict.get('Name')
+    return render_template('sourceSpiderGraph.html', source_data=data, source=name)
 
 
 @app.route('/get-source-stats/<query>')
