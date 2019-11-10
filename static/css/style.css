@@ -101,6 +101,19 @@ body {
 	margin-right:10px;
 	color:#aaa;
 }
+.stream-nav b {
+	font-weight:700;
+}
+.stream-nav a {
+	text-decoration:none;
+	color:black;
+}
+.stream-nav a:hover {
+	text-decoration:underline;
+}
+.stream-nav a:active {
+	color:#e3e3e3;
+}
 .stream {
 	width:100%;
 	height:calc(var(--box-size) + 20px);
@@ -124,6 +137,8 @@ body {
 	float:left;
 	flex:0 0 auto;
 	
+/*	overflow:hidden;
+	max-height:150px;*/
 }
 .si-header {
 	top:0;
@@ -153,6 +168,9 @@ body {
 	margin:10px;
 	font-family: "Noto Serif JP", serif;
 	font-size:10pt;
+
+	max-height:150px;
+	overflow:hidden;
 }
 .si-footer {
 	bottom:0;

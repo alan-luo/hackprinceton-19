@@ -1,7 +1,7 @@
 <html>
 	<head>
 		{% block head %}
-		<link href="https://fonts.googleapis.com/css?family=Lato:300,400|Noto+Serif+JP:400,700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Noto+Serif+JP:400,700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="../static/css/style.css">
 		<link rel="stylesheet" href="../static/css/icomoon.css">
 		<script
@@ -27,5 +27,14 @@
 			{% block content %}
 			{% endblock %}
 		</div>
+
+		<script>
+			$(".filter-input").keypress(function(e) {
+				if(e.keyCode == 13) {
+					
+					$(this).val("");
+				}
+			});
+		</script>
 	</body>
 </html>

@@ -1,9 +1,12 @@
 from flask import Flask, render_template
 from newsapi import NewsApiClient
+import math
+import datetime
+import json
 
 app = Flask(__name__)
 newsapi = NewsApiClient(api_key='466f16c5dc2445eabe6a30991514a281')
-top_topics = ['Impeachment', 'Vape', 'Election', 'Hong Kong']
+top_topics = ['impeachment', 'vaping', 'election', 'hong kong']
 news_source_stats = {
     "CNN": {'Credibility': 0.59, 'Locality': 0.56, 'Liberal Bias': 0.42, 'Updatedness': 0.34, 'Sensationalism': 0.48},
     "BBC": {'Credibility': 0.90, 'Locality': 0.10, 'Liberal Bias': 0.50, 'Updatedness': 0.87, 'Sensationalism': 0.74},
@@ -31,16 +34,35 @@ def viz():
 
 
 @app.route('/get_topic/<topic_name>')
+def get_topic_view(topic_name):
+    return json.dumps(get_topic(topic_name))
 def get_topic(topic_name):
     encoded = topic_name.encode("ascii")
     if isinstance(topic_name, str):
         topic_str = topic_name
     else:
         topic_str = encoded
-    myobj = newsapi.get_everything(q=topic_str, language='en', page_size=20).get('articles')
-    print "getting from " + topic_name
-    print len(myobj)
-    return myobj
+    articles = newsapi.get_everything(q=topic_str, language='en', page_size=20).get('articles')
+    # datetime.datetime.now() - datetime.datetime.strptime('2019-10-15T15:58:34Z', "%Y-%m-%dT%H:%M:%SZ")
+    for article in articles:
+        article['publishedAt'] = article['publishedAt'][:19]
+        mydate = datetime.datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%S")
+        mydelta = datetime.datetime.utcnow()-mydate
+        # for now do this in python, in the future want to do this on jinja side
+        if mydelta.days == 0:
+            hours = math.floor(mydelta.seconds / 3600)
+            if hours == 0:
+                minutes = math.floor(mydelta.seconds / 60)
+                if minutes == 0:
+                    article['timesince'] = str(int(mydelta.seconds)) + " second" + ("s" if mydelta.seconds > 1 else "")
+                else:
+                    article['timesince'] = str(int(minutes)) + " minute" + ("s" if minutes > 1 else "")
+            else: 
+                article['timesince'] = str(int(hours)) + " hour" + ("s" if hours > 1 else "")
+        else: 
+            article['timesince'] = str(mydelta.days) + " day" + ("s" if mydelta.days > 1 else "")
+        
+    return articles
 
 
 @app.route('/view-source-stats/<query>')
